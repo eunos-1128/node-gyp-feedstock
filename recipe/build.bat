@@ -1,6 +1,7 @@
 @echo on
 setlocal enabledelayedexpansion
 
+
 if "%target_platform%"=="win-64" (
     set "npm_config_arch=x64"
 ) else if "%target_platform%"=="win-arm64" (
