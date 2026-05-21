@@ -1,9 +1,6 @@
 @echo on
 setlocal enabledelayedexpansion
 
-dir /s /b "%PREFIX%\node.exe"
-dir /s /b "%BUILD_PREFIX%\node.exe"
-
 if "%target_platform%"=="win-64" (
     set "npm_config_arch=x64"
 ) else if "%target_platform%"=="win-arm64" (
@@ -16,9 +13,9 @@ set "npm_config_build_from_source=true"
 set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 
 @REM Replace node symlink with `BUILD_PREFIX` version
-del "%LIBRARY_BIN%\node.exe"
+del "%PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
-copy /Y "%BUILD_PREFIX%\Library\bin\node.exe" "%LIBRARY_BIN%\node.exe"
+mklink /H "%PREFIX%\node.exe" "%BUILD_PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
 
 pnpm install --prod
@@ -33,5 +30,5 @@ if errorlevel 1 exit /b 1
 npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
 if errorlevel 1 exit /b 1
 
-del "%LIBRARY_BIN%\node.exe"
+del "%PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
