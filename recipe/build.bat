@@ -24,7 +24,7 @@ pnpm install --prod
 pnpm licenses list --json > licenses_tmp.json
 if errorlevel 1 exit /b 1
 
-pnpm-licenses generate-disclaimer --json-input --output-file=ThirdPartyLicenses.txt < licenses_tmp.json
+pnpm-licenses generate-disclaimer -i licenses_tmp.json --output-file=ThirdPartyLicenses.txt
 if errorlevel 1 exit /b 1
 
 del licenses_tmp.json
@@ -38,8 +38,3 @@ if errorlevel 1 exit /b 1
 
 del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
-
-::echo @echo off > "%LIBRARY_BIN%\node-gyp.cmd"
-::echo call "%CONDA_PREFIX%\Library\bin\node.exe" "%CONDA_PREFIX%\node_modules\node-gyp\bin\node-gyp.js" %^* >> "%LIBRARY_BIN%\node-gyp.cmd"
-::if errorlevel 1 exit /b 1
-
