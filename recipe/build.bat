@@ -1,7 +1,6 @@
 @echo on
 setlocal enabledelayedexpansion
 
-
 if "%target_platform%"=="win-64" (
     set "npm_config_arch=x64"
 ) else if "%target_platform%"=="win-arm64" (
@@ -13,14 +12,22 @@ if errorlevel 1 exit /b 1
 set "npm_config_build_from_source=true"
 set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 
-pnpm install --prod > nul 2>&1
+del "%PREFIX%\node.exe"
+if errorlevel 1 exit /b 1
+mklink /H "%PREFIX%\node.exe" "%BUILD_PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
 
-pnpm-licenses generate-disclaimer --prod --output-file=ThirdPartyLicenses.txt
+call pnpm install --prod > nul 2>&1
 if errorlevel 1 exit /b 1
 
-pnpm pack
+call pnpm-licenses generate-disclaimer --prod --output-file=ThirdPartyLicenses.txt
 if errorlevel 1 exit /b 1
 
-npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
+call pnpm pack
+if errorlevel 1 exit /b 1
+
+call npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
+if errorlevel 1 exit /b 1
+
+del "%PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
