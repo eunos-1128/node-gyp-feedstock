@@ -17,7 +17,7 @@ if errorlevel 1 exit /b 1
 mklink /H "%PREFIX%\node.exe" "%BUILD_PREFIX%\node.exe"
 if errorlevel 1 exit /b 1
 
-call pnpm install --prod > nul 2>&1
+call pnpm install --prod
 if errorlevel 1 exit /b 1
 
 call pnpm-licenses generate-disclaimer --prod --output-file=ThirdPartyLicenses.txt
