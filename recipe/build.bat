@@ -25,6 +25,3 @@ if errorlevel 1 exit /b 1
 
 npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
 if errorlevel 1 exit /b 1
-
-del "%PREFIX%\node.exe"
-if errorlevel 1 exit /b 1
