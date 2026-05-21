@@ -33,11 +33,13 @@ if errorlevel 1 exit /b 1
 pnpm pack
 if errorlevel 1 exit /b 1
 
-npm install -g --no-bin-links --%PKG_NAME%-%PKG_VERSION%.tgz
+npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
 if errorlevel 1 exit /b 1
 
-tee ${PREFIX}/bin/node-gyp.cmd << 'EOF'
-call %CONDA_PREFIX%\bin\node %CONDA_PREFIX%\lib\node_modules\node-gyp/bin/node-gyp.js %*
-EOF
+del "%PREFIX%\Library\bin\node.exe"
 if errorlevel 1 exit /b 1
+
+::echo @echo off > "%LIBRARY_BIN%\node-gyp.cmd"
+::echo call "%CONDA_PREFIX%\Library\bin\node.exe" "%CONDA_PREFIX%\node_modules\node-gyp\bin\node-gyp.js" %^* >> "%LIBRARY_BIN%\node-gyp.cmd"
+::if errorlevel 1 exit /b 1
 
