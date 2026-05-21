@@ -1,6 +1,9 @@
 @echo on
 setlocal enabledelayedexpansion
 
+type "%SRC_DIR%\build_env.bat"
+
+
 if "%target_platform%"=="win-64" (
     set "npm_config_arch=x64"
 ) else if "%target_platform%"=="win-arm64" (
