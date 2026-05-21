@@ -15,8 +15,7 @@ set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 @REM Replace node symlink with BUILD_PREFIX version
 del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
-
-mklink "%BUILD_PREFIX%\Library\bin\node.exe" "%LIBRARY_BIN%\node.exe"
+mklink "%PREFIX%\Library\bin\node.exe" "%BUILD_PREFIX%\Library\bin\node.exe"
 if errorlevel 1 exit /b 1
 
 pnpm install --prod
