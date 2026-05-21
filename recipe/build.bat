@@ -14,12 +14,6 @@ if errorlevel 1 exit /b 1
 set "npm_config_build_from_source=true"
 set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 
-@REM Replace node symlink with `BUILD_PREFIX` version
-del "%PREFIX%\node.exe"
-if errorlevel 1 exit /b 1
-mklink /H "%PREFIX%\node.exe" "%BUILD_PREFIX%\node.exe"
-if errorlevel 1 exit /b 1
-
 pnpm install --prod
 if errorlevel 1 exit /b 1
 
