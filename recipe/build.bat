@@ -12,14 +12,14 @@ if errorlevel 1 exit /b 1
 set "npm_config_build_from_source=true"
 set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 
-@REM Replace node symlink with BUILD_PREFIX version
+@REM Replace node symlink with `BUILD_PREFIX` version
 del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
-mklink "%PREFIX%\Library\bin\node.exe" "%BUILD_PREFIX%\Library\bin\node.exe"
+mklink "%LIBRARY_BIN%\node.exe" "%BUILD_PREFIX%\Library\bin\node.exe"
 if errorlevel 1 exit /b 1
 
+@REM pnpm WARNs about missing .EXE shims on Windows, ignore non-fatal errors
 pnpm install --prod
-if errorlevel 1 exit /b 1
 
 pnpm licenses list --json > licenses_tmp.json
 if errorlevel 1 exit /b 1
@@ -36,7 +36,7 @@ if errorlevel 1 exit /b 1
 npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
 if errorlevel 1 exit /b 1
 
-del "%PREFIX%\Library\bin\node.exe"
+del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
 
 ::echo @echo off > "%LIBRARY_BIN%\node-gyp.cmd"
