@@ -1,8 +1,6 @@
 @echo on
 setlocal enabledelayedexpansion
 
-type "%BUILD_DIR%\conda_build.bat"
-
 if "%target_platform%"=="win-64" (
     set "npm_config_arch=x64"
 ) else if "%target_platform%"=="win-arm64" (
