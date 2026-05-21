@@ -1,0 +1,28 @@
+@echo on
+setlocal enabledelayedexpansion
+
+if "%target_platform%"=="win-64" (
+    set "npm_config_arch=x64"
+) else if "%target_platform%"=="win-arm64" (
+    set "npm_config_arch=arm64"
+)
+
+@REM Don't use pre-built gyp packages
+set "npm_config_build_from_source=true"
+set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
+
+@REM Replace node symlink with BUILD_PREFIX version
+del "%PREFIX%\bin\node.exe"
+mklink "%PREFIX%\bin\node.exe" "%BUILD_PREFIX%\bin\node.exe"
+
+pnpm install --prod
+if errorlevel 1 exit /b 1
+
+pnpm licenses list --json | pnpm-licenses generate-disclaimer --json-input --output-file=ThirdPartyLicenses.txt
+if errorlevel 1 exit /b 1
+
+pnpm pack
+if errorlevel 1 exit /b 1
+
+npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
+if errorlevel 1 exit /b 1
