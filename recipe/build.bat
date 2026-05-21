@@ -15,19 +15,13 @@ set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 @REM Replace node symlink with `BUILD_PREFIX` version
 del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
-mklink "%LIBRARY_BIN%\node.exe" "%BUILD_PREFIX%\Library\bin\node.exe"
+mklink /H "%LIBRARY_BIN%\node.exe" "%BUILD_PREFIX%\Library\bin\node.exe"
 if errorlevel 1 exit /b 1
 
 @REM pnpm WARNs about missing .EXE shims on Windows, ignore non-fatal errors
 pnpm install --prod
 
-pnpm licenses list --json > licenses_tmp.json
-if errorlevel 1 exit /b 1
-
-pnpm-licenses generate-disclaimer -i licenses_tmp.json --output-file=ThirdPartyLicenses.txt
-if errorlevel 1 exit /b 1
-
-del licenses_tmp.json
+pnpm-licenses generate-disclaimer --prod --output-file=ThirdPartyLicenses.txt
 if errorlevel 1 exit /b 1
 
 pnpm pack
