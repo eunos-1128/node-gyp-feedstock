@@ -16,17 +16,29 @@ set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
 
-mklink "%LIBRARY_BIN%\node.exe" "%LIBRARY_BIN%\node.exe"
+mklink "%BUILD_PREFIX%\Library\bin\node.exe" "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
 
 pnpm install --prod
 if errorlevel 1 exit /b 1
 
-pnpm licenses list --json | pnpm-licenses generate-disclaimer --json-input --output-file=ThirdPartyLicenses.txt
+pnpm licenses list --json > licenses_tmp.json
+if errorlevel 1 exit /b 1
+
+pnpm-licenses generate-disclaimer --json-input --output-file=ThirdPartyLicenses.txt < licenses_tmp.json
+if errorlevel 1 exit /b 1
+
+del licenses_tmp.json
 if errorlevel 1 exit /b 1
 
 pnpm pack
 if errorlevel 1 exit /b 1
 
-npm install -g %PKG_NAME%-%PKG_VERSION%.tgz
+npm install -g --no-bin-links --%PKG_NAME%-%PKG_VERSION%.tgz
 if errorlevel 1 exit /b 1
+
+tee ${PREFIX}/bin/node-gyp.cmd << 'EOF'
+call %CONDA_PREFIX%\bin\node %CONDA_PREFIX%\lib\node_modules\node-gyp/bin/node-gyp.js %*
+EOF
+if errorlevel 1 exit /b 1
+
