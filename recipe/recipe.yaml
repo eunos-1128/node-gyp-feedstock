@@ -17,7 +17,7 @@ build:
 
 requirements:
   build:
-    - ${{ "nodejs" if unix }}
+    - nodejs
   host:
     - nodejs
     - pnpm
