@@ -13,10 +13,10 @@ set "npm_config_build_from_source=true"
 set "NPM_CONFIG_USERCONFIG=%TEMP%\nonexistentrc"
 
 @REM Replace node symlink with BUILD_PREFIX version
-del "%PREFIX%\bin\node.exe"
+del "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
 
-mklink "%PREFIX%\bin\node.exe" "%BUILD_PREFIX%\bin\node.exe"
+mklink "%LIBRARY_BIN%\node.exe" "%LIBRARY_BIN%\node.exe"
 if errorlevel 1 exit /b 1
 
 pnpm install --prod
